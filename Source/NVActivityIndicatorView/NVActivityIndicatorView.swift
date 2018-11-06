@@ -415,8 +415,9 @@ public final class NVActivityIndicatorView: UIView {
     /// Animation type.
     public var type: NVActivityIndicatorType = NVActivityIndicatorView.DEFAULT_TYPE
 
+    
     @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'type' instead.")
-    @IBInspectable var typeName: String {
+    @IBInspectable public var typeName: String {
         get {
             return getTypeName()
         }
@@ -472,6 +473,23 @@ public final class NVActivityIndicatorView: UIView {
         isHidden = true
     }
 
+   
+    // ObjC Compatible Init
+    @objc public convenience init(frame: CGRect, typeName: String, color: UIColor? = nil, padding: CGFloat)
+    {
+       var type : NVActivityIndicatorType? = nil
+        
+        for item in NVActivityIndicatorType.allTypes {
+            if String(describing: item).caseInsensitiveCompare(typeName) == ComparisonResult.orderedSame {
+                type = item
+                break
+            }
+        }
+
+        self.init(frame:frame, type:type, color:color, padding:padding)
+    }
+        
+        
     // Fix issue #62
     // Intrinsic content size is used in autolayout
     // that causes mislayout when using with MBProgressHUD.
@@ -498,7 +516,7 @@ public final class NVActivityIndicatorView: UIView {
     /**
      Start animating.
      */
-    public final func startAnimating() {
+    @objc public final func startAnimating() {
         isHidden = false
         isAnimating = true
         layer.speed = 1
@@ -508,7 +526,7 @@ public final class NVActivityIndicatorView: UIView {
     /**
      Stop animating.
      */
-    public final func stopAnimating() {
+    @objc public final func stopAnimating() {
         isHidden = true
         isAnimating = false
         layer.sublayers?.removeAll()
